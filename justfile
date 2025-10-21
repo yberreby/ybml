@@ -5,6 +5,10 @@ check: lint format-check typecheck test
 test:
     uv run -m pytest
 
+# Run tests with coverage
+coverage:
+    uv run -m pytest --cov=ytch --cov=yjax --cov=ymlx --cov-report=term-missing
+
 # Run a demo
 demo name:
     uv run python demo/{{name}}.py

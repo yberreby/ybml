@@ -1,6 +1,6 @@
 import pytest
 import torch
-from ytch.correctness import assert_shape
+from ytch.correctness.shapes import assert_shape
 
 
 def test_assert_shape_passes():

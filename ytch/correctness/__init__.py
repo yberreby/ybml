@@ -1,7 +1,4 @@
-import torch
+from ytch.correctness.gradients import assert_gradients_flow
+from ytch.correctness.shapes import assert_shape
 
-
-def assert_shape(x: torch.Tensor, expected_shape: tuple[int, ...]) -> None:
-    assert x.shape == expected_shape, (
-        f"shape mismatch: expected shape {expected_shape}, got {tuple(x.shape)}"
-    )
+__all__ = ["assert_shape", "assert_gradients_flow"]
