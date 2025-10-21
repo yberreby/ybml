@@ -1,3 +1,7 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
 [project]
 name = "ybml"
 version = "0.1.0"
@@ -8,6 +12,9 @@ dependencies = [
     "numpy>=2.3.4",
     "torch>=2.9.0",
 ]
+
+[tool.hatch.build.targets.wheel]
+packages = ["ytch", "yjax", "ymlx"]
 
 [dependency-groups]
 dev = [
@@ -21,6 +28,6 @@ dev = [
 ignore = []
 
 [tool.pytest.ini_options]
-testpaths = [".", "*/test*.py"]
+testpaths = ["."]
 python_files = "test*.py"
 python_functions = "test_*"

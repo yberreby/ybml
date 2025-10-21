@@ -5,6 +5,10 @@ check: lint format-check typecheck test
 test:
     uv run -m pytest
 
+# Run a demo
+demo name:
+    uv run python demo/{{name}}.py
+
 # Lint with ruff
 lint:
     uv run ruff check --fix .
