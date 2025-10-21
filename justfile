@@ -1,9 +1,9 @@
+# Run all checks (lint, format, typecheck, test)
+check: lint format-check typecheck test
+
 # Run tests
 test:
     uv run -m pytest
-
-# Run all checks (lint, format, typecheck, test)
-check: lint format-check typecheck test
 
 # Lint with ruff
 lint:
