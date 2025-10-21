@@ -7,7 +7,7 @@ test:
 
 # Lint with ruff
 lint:
-    uv run ruff check .
+    uv run ruff check --fix .
 
 # Format with ruff
 format:
