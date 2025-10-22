@@ -14,3 +14,6 @@ wheels/
 
 # MLFlow
 mlruns
+
+# Hydra
+outputs
