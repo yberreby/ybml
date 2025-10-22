@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 from torch import Tensor
-from ytch.metrics import compute_grad_norm
+from ytch.metrics import compute_grad_norm, print_grad_norms
 
 
 def test_compute_grad_norm():
@@ -30,3 +30,16 @@ def test_compute_grad_norm_zero_grads():
 
     grad_norm = compute_grad_norm(model)
     assert grad_norm.item() == 0.0
+
+
+def test_print_grad_norms():
+    model = nn.Linear(3, 2)
+    x = torch.randn(5, 3, requires_grad=True)
+    y = torch.randn(5, 2)
+    criterion = nn.MSELoss()
+
+    loss = criterion(model(x), y)
+    loss.backward()
+
+    print_grad_norms(model)
+    print_grad_norms(model, prefix="test")
