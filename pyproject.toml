@@ -9,6 +9,7 @@ description = "A collection of ML utilities."
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "hydra-core",
     "matplotlib>=3.10.7",
     "mlflow>=3.5.0",
     "numpy>=2.3.4",
@@ -41,6 +42,7 @@ python_functions = "test_*"
 
 [tool.uv.sources]
 zclip = { git = "https://github.com/bluorion-com/ZClip.git" }
+hydra-core = { git = "https://github.com/facebookresearch/hydra.git" }
 
 [tool.basedpyright]
 reportMissingTypeStubs = "none"

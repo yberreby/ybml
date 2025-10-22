@@ -861,6 +861,15 @@ wheels = [
 ]
 
 [[package]]
+name = "hydra-core"
+version = "1.4.0.dev1"
+source = { git = "https://github.com/facebookresearch/hydra.git#b785290504577b06d7131d87f85cfe121004dce2" }
+dependencies = [
+    { name = "omegaconf" },
+    { name = "packaging" },
+]
+
+[[package]]
 name = "idna"
 version = "3.11"
 source = { registry = "https://pypi.org/simple" }
@@ -1620,6 +1629,18 @@ version = "12.8.90"
 source = { registry = "https://pypi.org/simple" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/a2/eb/86626c1bbc2edb86323022371c39aa48df6fd8b0a1647bc274577f72e90b/nvidia_nvtx_cu12-12.8.90-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:5b17e2001cc0d751a5bc2c6ec6d26ad95913324a4adb86788c944f8ce9ba441f", size = 89954, upload-time = "2025-03-07T01:42:44.131Z" },
+]
+
+[[package]]
+name = "omegaconf"
+version = "2.4.0.dev3"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pyyaml" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/86/49/6368e41ec04eafc08895f5e56677914314a1bdf084376a7e392eb17905a7/omegaconf-2.4.0.dev3.tar.gz", hash = "sha256:9948b9bfb15074863883bb90c4bfc9f3878af392e77ef5d8c9b01fac834745b1", size = 3440280, upload-time = "2024-02-29T17:01:42.975Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/dc/08/29b30970ce5e22440e2bc1fd929a79de08feb3c6c054bc7e832228fc1a94/omegaconf-2.4.0.dev3-py3-none-any.whl", hash = "sha256:acffa42eab0d9cb09ccead6e80d1dfd20a625e21602353f267f3bc2cd131f7b2", size = 224417, upload-time = "2024-02-29T17:01:39.557Z" },
 ]
 
 [[package]]
@@ -2880,6 +2901,7 @@ name = "ybml"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
+    { name = "hydra-core" },
     { name = "matplotlib" },
     { name = "mlflow" },
     { name = "numpy" },
@@ -2901,6 +2923,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
+    { name = "hydra-core", git = "https://github.com/facebookresearch/hydra.git" },
     { name = "matplotlib", specifier = ">=3.10.7" },
     { name = "mlflow", specifier = ">=3.5.0" },
     { name = "numpy", specifier = ">=2.3.4" },
