@@ -4,7 +4,7 @@ import torch.nn as nn
 from torch import Tensor
 from torch.optim import Optimizer
 from torch.optim.lr_scheduler import LRScheduler
-from ytch.grad import compute_grad_norm
+from ytch.metrics import compute_grad_norm
 from zclip import ZClip
 
 

@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 from torch import Tensor
-from ytch.grad import compute_grad_norm
+from ytch.metrics import compute_grad_norm
 
 
 def test_compute_grad_norm():
