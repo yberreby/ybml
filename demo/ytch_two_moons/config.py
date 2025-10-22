@@ -18,6 +18,7 @@ class TrainingConfig:
 @dataclass
 class ModelConfig:
     hidden_dim: int = 64
+    smart_output_init: bool = True  # Data-dependent output init for balanced logits
 
 
 @dataclass

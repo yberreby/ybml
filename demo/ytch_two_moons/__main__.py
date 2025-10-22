@@ -24,10 +24,22 @@ cs = ConfigStore.instance()
 cs.store(name="two_moons", node=TwoMoonsConfig)
 
 
+def generate_batch(n_samples: int, noise_std: float, mean: np.ndarray, std: np.ndarray):
+    """Generate and standardize a batch of two moons data."""
+    x, y = make_moons(n_samples=n_samples, noise=noise_std)
+    x = (x - mean) / std
+    return tensor(x, dtype=torch.float32), tensor(y, dtype=torch.long)
+
+
 @hydra.main(version_base=None, config_name="two_moons")
 def main(cfg: DictConfig) -> None:
     _ = manual_seed(cfg.dataset.seed)
     np.random.seed(cfg.dataset.seed)
+
+    # Compute input statistics for standardization
+    x_stats, _ = make_moons(n_samples=10000, noise=cfg.dataset.noise_std, random_state=cfg.dataset.seed)
+    input_mean = x_stats.mean(axis=0)
+    input_std = x_stats.std(axis=0)
 
     _ = set_experiment(cfg.logging.experiment_name)
 
@@ -39,6 +51,7 @@ def main(cfg: DictConfig) -> None:
                 "n_steps": cfg.training.n_steps,
                 "base_lr": cfg.training.base_lr,
                 "hidden_dim": cfg.model.hidden_dim,
+                "smart_output_init": cfg.model.smart_output_init,
             }
         )
 
@@ -50,21 +63,22 @@ def main(cfg: DictConfig) -> None:
         )
         assert isinstance(x_grid, np.ndarray)
         assert isinstance(y_grid, np.ndarray)
+        x_grid = (x_grid - input_mean) / input_std
         xx, yy, grid_points = create_grid(x_grid, cfg.viz)
         fig, im, title = create_plot_objects(x_grid, y_grid, xx, yy, cfg.viz)
 
-        model = TwoMoonsClassifier(cfg.model.hidden_dim)
+        model = TwoMoonsClassifier(
+            cfg.model.hidden_dim, smart_output_init=cfg.model.smart_output_init
+        )
         n_params = count_parameters(model)
         print(f"Model parameters: {n_params:,}")
         _ = log_param("n_parameters", n_params)
 
         # Print gradient norms at initialization
         print("\nGradient norms at initialization:")
-        x_init, y_init = make_moons(
-            n_samples=cfg.training.batch_size, noise=cfg.dataset.noise_std
+        x_init, y_init = generate_batch(
+            cfg.training.batch_size, cfg.dataset.noise_std, input_mean, input_std
         )
-        x_init = tensor(x_init, dtype=torch.float32)
-        y_init = tensor(y_init, dtype=torch.long)
         result_init = model(x_init, y_init)
         result_init["loss"].backward()
         print_grad_norms(model, prefix="  ")
@@ -85,12 +99,9 @@ def main(cfg: DictConfig) -> None:
 
         for step in trange(cfg.training.n_steps, desc="Training"):
             # Generate fresh batch at each step (infinite data regime)
-            x_batch, y_batch = make_moons(
-                n_samples=cfg.training.batch_size, noise=cfg.dataset.noise_std
+            x_batch, y_batch = generate_batch(
+                cfg.training.batch_size, cfg.dataset.noise_std, input_mean, input_std
             )
-            x_batch = tensor(x_batch, dtype=torch.float32)
-            y_batch = tensor(y_batch, dtype=torch.long)
-
             batch = (x_batch, y_batch)
             step_output = training_step(batch, model, optimizer, scheduler, zclip)
 
