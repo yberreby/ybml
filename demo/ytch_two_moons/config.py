@@ -1,0 +1,30 @@
+# Dataset (infinite regime - fresh data each batch)
+DATASET_NOISE_STD = 0.1
+SEED = 42
+GRID_SAMPLES = 1000
+
+# Training
+BATCH_SIZE = 256
+N_STEPS = 5000
+BASE_LR = 1e-4
+
+# Model
+HIDDEN_DIM = 64
+
+# Logging
+EXPERIMENT_NAME = "two_moons"
+LOG_PLOT_EVERY_N_STEPS = 10
+
+# Visualization
+GRID_RESOLUTION = 200
+ALPHA_POINTS = 0.6
+ALPHA_SURFACE = 0.3
+FIGSIZE_WIDTH = 10
+FIGSIZE_HEIGHT = 8
+DPI = 100
+PLOT_PADDING = 0.5
+
+# Formatting
+LOSS_PRECISION = 4
+ACC_PRECISION = 4
+LR_PRECISION = 6
