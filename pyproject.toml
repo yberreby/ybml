@@ -24,6 +24,7 @@ packages = ["ymc", "ytch", "yjax", "ymlx"]
 [dependency-groups]
 dev = [
     "basedpyright>=1.31.7",
+    "ipython>=9.6.0",
     "pytest>=8.4.2",
     "pytest-cov>=7.0.0",
     "ruff>=0.14.1",
