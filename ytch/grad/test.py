@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+from torch import Tensor
 from ytch.grad import compute_grad_norm
 
 
@@ -13,8 +14,8 @@ def test_compute_grad_norm():
     loss.backward()
 
     grad_norm = compute_grad_norm(model)
-    assert grad_norm > 0
-    assert isinstance(grad_norm, float)
+    assert grad_norm.item() > 0
+    assert isinstance(grad_norm, Tensor)
 
 
 def test_compute_grad_norm_zero_grads():
@@ -28,4 +29,4 @@ def test_compute_grad_norm_zero_grads():
     model.zero_grad()
 
     grad_norm = compute_grad_norm(model)
-    assert grad_norm == 0.0
+    assert grad_norm.item() == 0.0
