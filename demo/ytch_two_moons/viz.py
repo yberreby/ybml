@@ -11,14 +11,7 @@ from matplotlib.text import Text
 from mlflow import log_figure
 from torch import Tensor, no_grad, tensor
 
-from .config import (
-    ALPHA_POINTS,
-    ALPHA_SURFACE,
-    FIGSIZE_HEIGHT,
-    FIGSIZE_WIDTH,
-    GRID_RESOLUTION,
-    PLOT_PADDING,
-)
+from .config import VizConfig
 
 
 def get_plot_filename(step: int) -> str:
@@ -27,21 +20,21 @@ def get_plot_filename(step: int) -> str:
 
 
 def create_grid(
-    x_np: np.ndarray[Any, np.dtype[np.floating[Any]]],
+    x_np: np.ndarray[Any, np.dtype[np.floating[Any]]], cfg: VizConfig
 ) -> tuple[
     np.ndarray[Any, np.dtype[np.floating[Any]]],
     np.ndarray[Any, np.dtype[np.floating[Any]]],
     Tensor,
 ]:
     """Create meshgrid for decision surface plotting (computed once)."""
-    x_min = float(x_np[:, 0].min()) - PLOT_PADDING
-    x_max = float(x_np[:, 0].max()) + PLOT_PADDING
-    y_min = float(x_np[:, 1].min()) - PLOT_PADDING
-    y_max = float(x_np[:, 1].max()) + PLOT_PADDING
+    x_min = float(x_np[:, 0].min()) - cfg.plot_padding
+    x_max = float(x_np[:, 0].max()) + cfg.plot_padding
+    y_min = float(x_np[:, 1].min()) - cfg.plot_padding
+    y_max = float(x_np[:, 1].max()) + cfg.plot_padding
 
     xx, yy = np.meshgrid(
-        np.linspace(x_min, x_max, GRID_RESOLUTION),
-        np.linspace(y_min, y_max, GRID_RESOLUTION),
+        np.linspace(x_min, x_max, cfg.grid_resolution),
+        np.linspace(y_min, y_max, cfg.grid_resolution),
     )
 
     grid_points = tensor(np.c_[xx.ravel(), yy.ravel()], dtype=torch.float32)
@@ -53,9 +46,10 @@ def create_plot_objects(
     y_np: np.ndarray[Any, np.dtype[np.integer[Any]]],
     xx: np.ndarray[Any, np.dtype[np.floating[Any]]],
     yy: np.ndarray[Any, np.dtype[np.floating[Any]]],
+    cfg: VizConfig,
 ) -> tuple[Figure, AxesImage, Text]:
     """Create reusable plot objects (called once)."""
-    fig, ax = plt.subplots(figsize=(FIGSIZE_WIDTH, FIGSIZE_HEIGHT))
+    fig, ax = plt.subplots(figsize=(cfg.figsize_width, cfg.figsize_height))
     assert isinstance(ax, Axes)
 
     extent = (float(xx.min()), float(xx.max()), float(yy.min()), float(yy.max()))
@@ -64,7 +58,7 @@ def create_plot_objects(
         dummy_z,
         extent=extent,
         origin="lower",
-        alpha=ALPHA_SURFACE,
+        alpha=cfg.alpha_surface,
         cmap="RdYlBu",
         aspect="auto",
         vmin=0,
@@ -75,7 +69,7 @@ def create_plot_objects(
         x_np[:, 0],
         x_np[:, 1],
         c=y_np,
-        alpha=ALPHA_POINTS,
+        alpha=cfg.alpha_points,
         edgecolors="k",
         cmap="RdYlBu",
     )
