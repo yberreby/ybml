@@ -28,3 +28,7 @@ format-check:
 # Type check with basedpyright
 typecheck:
     uv run basedpyright --level error
+
+# Inspect module tree
+inspect:
+    uv run python inspect_modules.py
