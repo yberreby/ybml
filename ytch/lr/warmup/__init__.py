@@ -1,14 +1,6 @@
-import math
 from torch.optim import Adam, AdamW
 from torch.optim.lr_scheduler import LambdaLR
-
-
-def get_warmup_steps_for_adam_beta2(beta2: float) -> int:
-    # "On the adequacy of untuned warmup for adaptive optimization"
-    # Jerry Ma, Denis Yarats
-    # https://arxiv.org/abs/1910.04209
-    assert 0 <= beta2 < 1
-    return math.ceil(2 / (1 - beta2))
+from ymc.lr import get_warmup_steps_for_adam_beta2
 
 
 def get_linear_warmup_scheduler(optimizer: Adam | AdamW) -> LambdaLR:

@@ -1,17 +1,8 @@
 import pytest
 import torch.nn as nn
 from torch.optim import Adam, AdamW
-from ytch.lr.warmup import get_warmup_steps_for_adam_beta2, get_linear_warmup_scheduler
-
-
-def test_get_warmup_steps_for_adam_beta2():
-    with pytest.raises(AssertionError):
-        get_warmup_steps_for_adam_beta2(1.0)
-    with pytest.raises(AssertionError):
-        get_warmup_steps_for_adam_beta2(-0.1)
-
-    assert get_warmup_steps_for_adam_beta2(0.0) == 2
-    assert get_warmup_steps_for_adam_beta2(0.999) == 2000
+from ymc.lr import get_warmup_steps_for_adam_beta2
+from ytch.lr.warmup import get_linear_warmup_scheduler
 
 
 @pytest.mark.parametrize("optimizer_class", [Adam, AdamW])
