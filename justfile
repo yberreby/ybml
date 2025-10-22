@@ -1,5 +1,5 @@
-# Run all checks (lint, format, typecheck, test)
-check: lint format-check typecheck test
+# Run all checks (lint, format, typecheck, test, coverage)
+check: lint format-check typecheck test coverage
 
 # Run tests
 test:
