@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
-import torch.nn as nn
 from mlflow import log_metrics, log_param, log_params, set_experiment, start_run
 from sklearn.datasets import make_moons
 from torch import manual_seed, tensor
@@ -11,7 +10,7 @@ from ytch.lr.warmup import get_linear_warmup_scheduler
 from ytch.model import count_parameters
 from zclip import ZClip
 
-from .model import SimpleMLP
+from .model import TwoMoonsClassifier
 from .config import (
     ACC_PRECISION,
     BASE_LR,
@@ -57,18 +56,17 @@ def main():
         xx, yy, grid_points = create_grid(x_grid)
         fig, im, title = create_plot_objects(x_grid, y_grid, xx, yy)
 
-        model = SimpleMLP(HIDDEN_DIM)
+        model = TwoMoonsClassifier(HIDDEN_DIM)
         n_params = count_parameters(model)
         print(f"Model parameters: {n_params:,}")
         _ = log_param("n_parameters", n_params)
 
         optimizer = AdamW(model.parameters(), lr=BASE_LR)
         scheduler = get_linear_warmup_scheduler(optimizer)
-        criterion = nn.CrossEntropyLoss()
         zclip = ZClip()
 
         # Log initial decision surface before any training
-        log_decision_surface(model, grid_points, xx, im, title, 0)
+        log_decision_surface(model.mlp, grid_points, xx, im, title, 0)
 
         assert N_STEPS > 0, "N_STEPS must be positive"
 
@@ -81,9 +79,8 @@ def main():
             x_batch = tensor(x_batch, dtype=torch.float32)
             y_batch = tensor(y_batch, dtype=torch.long)
 
-            step_output = training_step(
-                model, x_batch, y_batch, optimizer, scheduler, criterion, zclip
-            )
+            batch = (x_batch, y_batch)
+            step_output = training_step(batch, model, optimizer, scheduler, zclip)
 
             acc = compute_accuracy(step_output.logits, y_batch)
 
@@ -99,7 +96,7 @@ def main():
             )
 
             if (step + 1) % LOG_PLOT_EVERY_N_STEPS == 0 or step == N_STEPS - 1:
-                log_decision_surface(model, grid_points, xx, im, title, step + 1)
+                log_decision_surface(model.mlp, grid_points, xx, im, title, step + 1)
 
         plt.close(fig)
 

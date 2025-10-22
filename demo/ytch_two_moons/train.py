@@ -19,24 +19,23 @@ class TrainingStepOutput(NamedTuple):
 
 
 def training_step(
+    batch,
     model: nn.Module,
-    batch_x: Tensor,
-    batch_y: Tensor,
     optimizer: Optimizer,
     scheduler: LRScheduler,
-    criterion: nn.Module,
     zclip: ZClip,
 ) -> TrainingStepOutput:
-    """Execute single training step."""
+    """Execute single training step. Expects batch as (x, y) tuple."""
     optimizer.zero_grad()
-    logits = model(batch_x)
-    loss = criterion(logits, batch_y)
+
+    result = model(*batch)
+    loss = result["loss"]
+    logits = result["logits"]
+
     loss.backward()
 
     grad_norm_pre_clip = compute_grad_norm(model)
-
     _ = zclip.step(model)
-
     grad_norm_post_clip = compute_grad_norm(model)
 
     optimizer.step()

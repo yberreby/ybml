@@ -20,3 +20,18 @@ class SimpleMLP(nn.Module):
     @override
     def forward(self, x: Tensor) -> Tensor:
         return self.net(x)
+
+
+class TwoMoonsClassifier(nn.Module):
+    """SimpleMLP with CrossEntropyLoss for training."""
+
+    def __init__(self, hidden_dim: int):
+        super().__init__()
+        self.mlp = SimpleMLP(hidden_dim)
+        self.criterion = nn.CrossEntropyLoss()
+
+    @override
+    def forward(self, x: Tensor, y: Tensor) -> dict[str, Tensor]:
+        logits = self.mlp(x)
+        loss = self.criterion(logits, y)
+        return {"loss": loss, "logits": logits}
