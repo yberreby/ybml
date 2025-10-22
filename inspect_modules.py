@@ -6,6 +6,7 @@ import inspect
 import pkgutil
 import tomllib
 from pathlib import Path
+from typing import Any
 
 
 def get_packages() -> list[str]:
@@ -47,7 +48,7 @@ def get_module_items(modname: str) -> list[str]:
     return sorted(items)
 
 
-def build_tree(submods: list[str], pkg_name: str) -> dict:
+def build_tree(submods: list[str], pkg_name: str) -> dict[str, Any]:
     """Build nested tree structure from flat module list."""
     tree = {}
     for modname in sorted(submods):
@@ -64,7 +65,7 @@ def build_tree(submods: list[str], pkg_name: str) -> dict:
     return tree
 
 
-def render_tree(tree: dict, prefix: str = "") -> None:
+def render_tree(tree: dict[str, Any], prefix: str = "") -> None:
     """Recursively render tree structure with box-drawing characters."""
     keys = [k for k in tree.keys() if k != "__items__"]
     for i, key in enumerate(keys):
