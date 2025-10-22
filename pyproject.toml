@@ -9,12 +9,17 @@ description = "A collection of ML utilities."
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "matplotlib>=3.10.7",
+    "mlflow>=3.5.0",
     "numpy>=2.3.4",
+    "scikit-learn>=1.7.2",
     "torch>=2.9.0",
+    "tqdm>=4.67.1",
+    "zclip",
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["ytch", "yjax", "ymlx"]
+packages = ["ymc", "ytch", "yjax", "ymlx"]
 
 [dependency-groups]
 dev = [
@@ -32,3 +37,6 @@ ignore = []
 testpaths = ["."]
 python_files = "test*.py"
 python_functions = "test_*"
+
+[tool.uv.sources]
+zclip = { git = "https://github.com/bluorion-com/ZClip.git" }
