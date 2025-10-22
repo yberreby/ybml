@@ -11,7 +11,7 @@ coverage:
 
 # Run a demo
 demo name:
-    uv run python demo/{{name}}.py
+    uv run python -m demo.{{name}}
 
 # Lint with ruff
 lint:
