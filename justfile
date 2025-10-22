@@ -25,6 +25,6 @@ format:
 format-check:
     uv run ruff format --check .
 
-# Type check with ty
+# Type check with basedpyright
 typecheck:
-    uv run ty check .
+    uv run basedpyright --level error

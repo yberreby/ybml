@@ -23,11 +23,11 @@ packages = ["ymc", "ytch", "yjax", "ymlx"]
 
 [dependency-groups]
 dev = [
+    "basedpyright>=1.31.7",
     "pytest>=8.4.2",
     "pytest-cov>=7.0.0",
     "ruff>=0.14.1",
     "rust-just>=1.43.0",
-    "ty>=0.0.1a23",
 ]
 
 [tool.ruff.lint]
@@ -40,3 +40,8 @@ python_functions = "test_*"
 
 [tool.uv.sources]
 zclip = { git = "https://github.com/bluorion-com/ZClip.git" }
+
+[tool.basedpyright]
+reportMissingTypeStubs = "none"
+reportExplicitAny = "none"
+reportAny = "none"
