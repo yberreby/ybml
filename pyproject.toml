@@ -7,7 +7,7 @@ name = "ybml"
 version = "0.1.0"
 description = "A collection of ML utilities."
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.11"
 dependencies = [
     "hydra-core",
     "matplotlib>=3.10.7",
