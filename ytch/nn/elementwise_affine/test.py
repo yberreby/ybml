@@ -1,7 +1,9 @@
 import pytest
 import torch
+
 from ytch.correctness import assert_gradients_flow
-from ytch.layers.elementwise_affine import ElementwiseAffine
+
+from . import ElementwiseAffine
 
 DIM = 10
 SMALL_DIM = 3

@@ -1,7 +1,9 @@
 import torch
 import torch.nn as nn
+
 from ytch.correctness import assert_gradients_flow
-from ytch.layers.skip import Skip
+
+from . import Skip
 
 BATCH_SIZE = 2
 DIM = 10
