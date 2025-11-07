@@ -17,12 +17,13 @@ def train(
     lr: float,
     weight_decay: float = 1e-4,
     n_steps: int = 5000,
-    bar_refresh_interval_seconds: float = 0.1,
+    log_interval_seconds: float = 0.1,
     on_step: Callable[[nn.Module, int, tuple, dict], None] | None = None,
 ) -> dict:
     """Train with Adam + linear warmup + ZClip + tqdm.
 
     Args:
+        log_interval_seconds: Interval for logging metrics.
         on_step: Optional callback(model, step, batch, outputs) called every step.
     """
     optimizer = AdamW(model.parameters(), lr=lr, weight_decay=weight_decay)
@@ -54,7 +55,7 @@ def train(
         gnpre = zclip.step(model)
 
         # Optional metrics computation
-        been_a_while = time.time() - last_update >= bar_refresh_interval_seconds
+        been_a_while = time.time() - last_update >= log_interval_seconds
         should_refresh = been_a_while or step == 0 or step == n_steps - 1
         gnpost = None
         if should_refresh:
