@@ -20,7 +20,6 @@ See `./justfile`.
 Run `uv run just inspect` to print the module tree, e.g. (this sample output may become out of date):
 
 ```
-uv run python inspect_modules.py
 ymc
 └── lr
     ├── get_linear_scaled_lr()
@@ -40,6 +39,9 @@ ytch
 ├── lr
 │   └── warmup
 │       └── get_linear_warmup_scheduler()
+├── magic
+│   └── dyniso
+│       └── ortho_block_init_()
 ├── metrics
 │   ├── compute_grad_norm()
 │   └── print_grad_norms()

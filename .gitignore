@@ -17,3 +17,6 @@ mlruns
 
 # Hydra
 outputs
+
+# Binary files
+*.png

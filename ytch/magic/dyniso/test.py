@@ -1,6 +1,8 @@
 import pytest
 import torch
 import torch.nn as nn
+import matplotlib.pyplot as plt
+from pathlib import Path
 
 from ytch.magic.dyniso import ortho_block_init_
 
@@ -60,3 +62,52 @@ def test_dynamical_isometry():
     grad_ratio = g_middle.mean() / g_first_hidden
     assert grad_ratio < 1.2, f"Gradients exploded with depth, ratio: {grad_ratio:.1f}"
     assert grad_ratio > 0.8, f"Gradients vanished depth, ratio: {grad_ratio:.1f}"
+
+
+def test_plot_isometry():
+    """Visual verification: plot activation and gradient flow vs default init."""
+    depth, dim, bs = 128, 64, 512
+
+    def run_experiment(init_fn):
+        _ = torch.manual_seed(42)
+        layers = [nn.Linear(dim, dim) for _ in range(depth)]
+        for layer in layers:
+            init_fn(layer)
+
+        x = torch.randn(bs, dim)
+
+        # Forward - skip first (projection) layer in tracking
+        x = torch.relu(layers[0](x))  # Project but don't track
+        act_stds = []
+        for layer in layers[1:]:
+            x = torch.relu(layer(x))
+            act_stds.append(x.std().item())
+
+        # Backward - skip first layer in tracking
+        loss = x.pow(2).mean()
+        loss.backward()
+        grad_norms = [layer.weight.grad.norm().item() for layer in layers[1:]]
+
+        return act_stds, grad_norms
+
+    experiments = [
+        ("ortho_block_init_", ortho_block_init_, "C0"),
+        ("default init", lambda layer: None, "C1"),
+    ]
+
+    fig, axs = plt.subplots(1, 2, figsize=(12, 5))
+
+    for i, (title, init_fn, color) in enumerate(experiments):
+        _, grad_norms = run_experiment(init_fn)
+        axs[i].plot(grad_norms, linewidth=2, color=color)
+        axs[i].set_xlabel("Hidden layer depth")
+        axs[i].set_ylabel("Gradient norm")
+        axs[i].set_title(title)
+        axs[i].set_yscale("log")
+        axs[i].grid(True, alpha=0.3)
+
+    plt.tight_layout()
+    out_path = Path(__file__).parent / "isometry.png"
+    plt.savefig(out_path, dpi=150)
+    plt.close()
+    print(f"Saved plot to {out_path}")
