@@ -2,7 +2,8 @@
 
 Utilities for my own usage; may be broken at any time.
 
-Targeting **PyTorch** (`ytch`), JAX (`yjax`), and MLX (`ymlx`).
+Targeting **PyTorch** (`ytch`), **JAX** (`yjax`), and **MLX** (`ymlx`).
+Core, framework-independent code is in `ymc`.
 
 ## Testing
 - `uv run just`: linting, type checking, formatting, testing, coverage.
