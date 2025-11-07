@@ -49,3 +49,5 @@ hydra-core = { git = "https://github.com/facebookresearch/hydra.git" }
 reportMissingTypeStubs = "none"
 reportExplicitAny = "none"
 reportAny = "none"
+reportUnknownMemberType = "none"
+reportUnknownVariableType = "none"
