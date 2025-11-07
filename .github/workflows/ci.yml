@@ -7,8 +7,8 @@ on:
     branches: [master]
 
 jobs:
-  test-and-render:
-    if: github.event.pull_request.draft == false
+  test:
+    # if: github.event.pull_request.draft == false
     name: Test Code
     runs-on: ubuntu-latest
     defaults:
