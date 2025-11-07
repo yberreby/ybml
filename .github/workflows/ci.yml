@@ -2,13 +2,13 @@ name: CI
 
 on:
   push:
-    branches: [master]
+    branches: [main]
   pull_request:
-    branches: [master]
+    branches: [main]
 
 jobs:
   test:
-    # if: github.event.pull_request.draft == false
+    if: github.event.pull_request.draft == false
     name: Test Code
     runs-on: ubuntu-latest
     defaults:
