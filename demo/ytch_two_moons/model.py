@@ -1,4 +1,4 @@
-from typing import Callable, override
+from typing import Callable
 
 import torch
 import torch.nn as nn
@@ -46,7 +46,6 @@ class SimpleMLP(nn.Module):
         x = self.activation(self.fc2(x))
         return x
 
-    @override
     def forward(self, x: Tensor) -> Tensor:
         return self.fc_out(self._backbone(x))
 
@@ -59,7 +58,6 @@ class TwoMoonsClassifier(nn.Module):
         self.mlp = SimpleMLP(hidden_dim, smart_output_init=smart_output_init)
         self.criterion = nn.CrossEntropyLoss()
 
-    @override
     def forward(self, x: Tensor, y: Tensor) -> dict[str, Tensor]:
         logits = self.mlp(x)
         loss = self.criterion(logits, y)
