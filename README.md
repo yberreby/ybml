@@ -10,9 +10,10 @@ Core, framework-independent code is in `ymc`.
 
 ## End-to-end demo(s)
 
-- `uv run just demo ytch_two_moons`: run an end-to-end demo.
+- `uv run just demo ytch_two_moons`: utterly toy task; uses MLFlow.
+- `uv run just demo single_img_deep_coord_mlp`: NeRF-style coordinate MLP mapping `(x,y)` to `(r,g,b)` to learn an image with a few twists.
 
-See `./justfile`.
+See `./justfile` for up-to-date commands.
 
 
 ## Module tree
@@ -21,6 +22,7 @@ Run `uv run just inspect` to print the module tree, e.g. (this sample output may
 
 ```
 ymc
+├── constants
 └── lr
     ├── get_linear_scaled_lr()
     └── get_warmup_steps_for_adam_beta2()
@@ -29,6 +31,7 @@ ytch
 │   └── mh
 │       ├── from_multihead()
 │       └── to_multihead()
+├── constants
 ├── correctness
 │   ├── gradients
 │   │   └── assert_gradients_flow()
@@ -47,9 +50,14 @@ ytch
 │   └── print_grad_norms()
 ├── model
 │   └── count_parameters()
-└── nn
-    ├── elementwise_affine
-    │   └── ElementwiseAffine
-    └── skip
-        └── Skip
+├── nn
+│   ├── elementwise_affine
+│   │   └── ElementwiseAffine
+│   ├── rff
+│   │   └── RandomFourierFeaturesND
+│   └── skip
+│       └── Skip
+└── train
+    ├── Trainer
+    └── train()
 ```
