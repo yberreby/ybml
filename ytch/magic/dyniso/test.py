@@ -86,13 +86,19 @@ def test_plot_isometry():
         # Backward - skip first layer in tracking
         loss = x.pow(2).mean()
         loss.backward()
-        grad_norms = [layer.weight.grad.norm().item() for layer in layers[1:]]
+        grad_norms = []
+        for layer in layers[1:]:
+            assert layer.weight.grad is not None
+            grad_norms.append(layer.weight.grad.norm().item())
 
         return act_stds, grad_norms
 
+    def noop(_):
+        pass
+
     experiments = [
         ("ortho_block_init_", ortho_block_init_, "C0"),
-        ("default init", lambda layer: None, "C1"),
+        ("default init", noop, "C1"),
     ]
 
     fig, axs = plt.subplots(1, 2, figsize=(12, 5))
