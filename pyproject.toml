@@ -31,6 +31,7 @@ dev = [
     "pytest-cov>=7.0.0",
     "ruff>=0.14.1",
     "rust-just>=1.43.0",
+    "tyro>=0.9.35",
 ]
 
 [tool.ruff.lint]
