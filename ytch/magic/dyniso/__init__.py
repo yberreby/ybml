@@ -25,14 +25,23 @@ def ortho_block_init_(layer: nn.Linear):
     )
     h_out, h_in = layer.out_features // 2, layer.in_features // 2
     with torch.no_grad():
+        device = layer.weight.device
+        init_device = device
+        if layer.weight.device.type == "mps":
+            # MPS doesn't currently support `orthogonal_`.
+            # This runs only at init, so, negligible cost to doing it on CPU.
+            init_device = "cpu"
+
         # Sample orthogonal template.
-        W0 = torch.nn.init.orthogonal_(torch.empty(h_out, h_in))
+        w0 = torch.empty(h_out, h_in, device=init_device)
+        _ = torch.nn.init.orthogonal_(w0)
+        w0 = w0.to(device)
 
         # Apply 2x2 block structure.
-        layer.weight.data[:h_out, :h_in] = W0
-        layer.weight.data[:h_out, h_in:] = -W0
-        layer.weight.data[h_out:, :h_in] = -W0
-        layer.weight.data[h_out:, h_in:] = W0
+        layer.weight.data[:h_out, :h_in] = w0
+        layer.weight.data[:h_out, h_in:] = -w0
+        layer.weight.data[h_out:, :h_in] = -w0
+        layer.weight.data[h_out:, h_in:] = w0
 
         # Zero out bias.
         _ = layer.bias.data.zero_()
