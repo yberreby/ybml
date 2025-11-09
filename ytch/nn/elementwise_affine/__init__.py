@@ -20,7 +20,9 @@ class ElementwiseAffine(nn.Module):
         def make_param(init_val, default_fn):
             if init_val is None:
                 return default_fn(dim, device=device, dtype=dtype)
-            return torch.full((dim,), init_val, device=device, dtype=dtype)
+            return torch.full(
+                size=(dim,), fill_value=init_val, device=device, dtype=dtype
+            )
 
         self.gamma = nn.Parameter(make_param(init_gamma, torch.ones))
         self.beta = nn.Parameter(make_param(init_beta, torch.zeros))
