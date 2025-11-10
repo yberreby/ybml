@@ -11,6 +11,3 @@ class Skip(nn.Module):
 
     def forward(self, x: Tensor) -> Tensor:
         return x + self.block(x)
-
-    def __repr__(self) -> str:
-        return f"Skip({self.block})"

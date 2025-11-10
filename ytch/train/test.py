@@ -22,3 +22,16 @@ def test_train_smoke():
     assert "lr" in result
     assert "gnpre" in result
     assert "samples/s" in result
+
+
+def test_train_with_callback():
+    """Smoketest: on_step callback is called."""
+    model = TinyModel()
+    data = lambda: (torch.randn(8, 2), torch.randn(8, 1))
+    calls = []
+
+    def on_step(m, step, batch, out):
+        calls.append(step)
+
+    train(model, data, n_steps=3, lr=1e-3, on_step=on_step, disable_tqdm=True)
+    assert calls == [0, 1, 2]

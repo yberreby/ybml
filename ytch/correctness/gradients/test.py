@@ -54,6 +54,14 @@ def test_assert_gradients_flow_nonexistent_param():
         assert_gradients_flow(module, x, check_params={"nonexistent"})
 
 
+def test_assert_gradients_flow_implicit_frozen_param_passes():
+    """Frozen params are skipped when check_params is None."""
+    module = nn.Linear(3, 2)
+    module.weight.requires_grad = False
+    x = torch.randn(2, 3, requires_grad=True)
+    assert_gradients_flow(module, x)  # Should pass, only checks bias
+
+
 def test_assert_gradients_flow_explicit_frozen_param_fails():
     module = nn.Linear(3, 2)
     module.weight.requires_grad = False

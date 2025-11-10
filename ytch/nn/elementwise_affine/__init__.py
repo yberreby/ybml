@@ -36,6 +36,3 @@ class ElementwiseAffine(nn.Module):
         gamma = self.gamma.view(shape).to(x.dtype)
         beta = self.beta.view(shape).to(x.dtype)
         return x * gamma + beta
-
-    def __repr__(self) -> str:
-        return f"ElementwiseAffine(dim={self.dim})"

@@ -64,6 +64,14 @@ def test_dynamical_isometry():
     assert grad_ratio > 0.8, f"Gradients vanished depth, ratio: {grad_ratio:.1f}"
 
 
+@pytest.mark.skipif(not torch.backends.mps.is_available(), reason="MPS not available")
+def test_mps_device():
+    """Smoketest: ortho_block_init_ works on MPS device."""
+    layer = nn.Linear(4, 4, device="mps")
+    ortho_block_init_(layer)
+    assert layer.weight.device.type == "mps"
+
+
 def test_plot_isometry():
     """Visual verification: plot activation and gradient flow vs default init."""
     depth, dim, bs = 128, 64, 512
