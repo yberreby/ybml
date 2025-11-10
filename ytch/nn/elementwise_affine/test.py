@@ -16,24 +16,30 @@ def test_elementwise_affine_defaults():
     y = layer(x)
 
     assert y.shape == x.shape
-    assert torch.allclose(layer.gamma, torch.ones(DIM))
-    assert torch.allclose(layer.beta, torch.zeros(DIM))
+    assert layer.scale is not None
+    assert layer.bias is not None
+    assert torch.allclose(layer.scale, torch.ones(DIM))
+    assert torch.allclose(layer.bias, torch.zeros(DIM))
 
 
 def test_elementwise_affine_custom_init():
-    layer = ElementwiseAffine(DIM, init_gamma=2.0, init_beta=0.5)
-    assert torch.allclose(layer.gamma, torch.full((DIM,), 2.0))
-    assert torch.allclose(layer.beta, torch.full((DIM,), 0.5))
+    layer = ElementwiseAffine(DIM, scale=2.0, bias=0.5)
+    assert layer.scale is not None
+    assert layer.bias is not None
+    assert torch.allclose(layer.scale, torch.full((DIM,), 2.0))
+    assert torch.allclose(layer.bias, torch.full((DIM,), 0.5))
 
 
 def test_elementwise_affine_computation():
     layer = ElementwiseAffine(SMALL_DIM)
-    layer.gamma.data = torch.tensor([2.0, 3.0, 4.0])
-    layer.beta.data = torch.tensor([1.0, 2.0, 3.0])
+    assert layer.scale is not None
+    assert layer.bias is not None
+    layer.scale.data = torch.tensor([2.0, 3.0, 4.0])
+    layer.bias.data = torch.tensor([1.0, 2.0, 3.0])
 
     x = torch.tensor([[1.0, 2.0, 3.0]])
     y = layer(x)
-    assert torch.allclose(y, x * layer.gamma + layer.beta)
+    assert torch.allclose(y, x * layer.scale + layer.bias)
 
 
 def test_elementwise_affine_multidim():
@@ -60,3 +66,18 @@ def test_elementwise_affine_gradients():
         ElementwiseAffine(SMALL_DIM),
         torch.randn(BATCH_SIZE, SMALL_DIM, requires_grad=True),
     )
+
+
+def test_elementwise_affine_no_bias():
+    layer = ElementwiseAffine(DIM, bias=False)
+    assert layer.bias is None
+    x = torch.randn(BATCH_SIZE, DIM)
+    y = layer(x)
+    assert y.shape == x.shape
+
+
+def test_elementwise_affine_bias_true_is_default():
+    layer1 = ElementwiseAffine(DIM, bias=True)
+    layer2 = ElementwiseAffine(DIM)
+    assert layer1.bias is not None and layer2.bias is not None
+    assert torch.allclose(layer1.bias, layer2.bias)
