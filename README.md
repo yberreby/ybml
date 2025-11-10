@@ -18,8 +18,6 @@ See `./justfile` for up-to-date commands.
 
 ## Module tree
 
-Run `uv run just inspect` to print the module tree, e.g. (this sample output may become out of date):
-
 ```
 ymc
 ├── constants
@@ -44,7 +42,8 @@ ytch
 │   └── shapes
 │       └── assert_shape()
 ├── device
-│   └── get_sensible_device()
+│   ├── get_sensible_device()
+│   └── sync_device()
 ├── estimators
 │   ├── bptt
 │   │   └── get_loss_bptt()

@@ -1,0 +1,23 @@
+# ybml - @yberreby's ML Library
+
+Utilities for my own usage; may be broken at any time.
+
+Targeting **PyTorch** (`ytch`), **JAX** (`yjax`), and **MLX** (`ymlx`).
+Core, framework-independent code is in `ymc`.
+
+## Testing
+- `uv run just`: linting, type checking, formatting, testing, coverage.
+
+## End-to-end demo(s)
+
+- `uv run just demo ytch_two_moons`: utterly toy task; uses MLFlow.
+- `uv run just demo single_img_deep_coord_mlp`: NeRF-style coordinate MLP mapping `(x,y)` to `(r,g,b)` to learn an image with a few twists.
+
+See `./justfile` for up-to-date commands.
+
+
+## Module tree
+
+```
+{{MODULE_TREE}}
+```

@@ -1,5 +1,5 @@
 # Run all checks (lint, format, typecheck, test, coverage)
-check: lint format-check typecheck test coverage
+check: generate-readme lint format-check typecheck test coverage
 
 # Run tests
 test:
@@ -32,3 +32,7 @@ typecheck:
 # Inspect module tree
 inspect:
     uv run python inspect_modules.py
+
+# Generate README.md from README.md.in with current module tree
+generate-readme:
+    uv run python generate_readme.py
