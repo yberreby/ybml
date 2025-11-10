@@ -35,7 +35,11 @@ dev = [
 ]
 
 [tool.ruff.lint]
-ignore = ["E731"]
+ignore = [
+    "E731",
+    # F722 and F832 get triggered by jaxtyping annotations
+    "F722", "F821"
+    ]
 
 [tool.pytest.ini_options]
 testpaths = ["."]
