@@ -23,11 +23,17 @@ Run `uv run just inspect` to print the module tree, e.g. (this sample output may
 ```
 ymc
 ├── constants
-└── lr
-    ├── get_linear_scaled_lr()
-    └── get_warmup_steps_for_adam_beta2()
+├── git
+│   └── get_git_metadata()
+├── lr
+│   ├── get_linear_scaled_lr()
+│   └── get_warmup_steps_for_adam_beta2()
+└── random
+    └── sample_by_tail_ratio()
 ytch
 ├── attention
+│   ├── cross_attention
+│   │   └── CrossAttention
 │   └── mh
 │       ├── from_multihead()
 │       └── to_multihead()
@@ -39,6 +45,19 @@ ytch
 │       └── assert_shape()
 ├── device
 │   └── get_sensible_device()
+├── estimators
+│   ├── bptt
+│   │   └── get_loss_bptt()
+│   └── reinforce
+│       ├── get_loss_reinforce()
+│       ├── get_loss_rloo_scalar()
+│       └── get_loss_rloo_stepwise()
+│       ├── baseline
+│       │   └── compute_leave_one_out_baseline()
+│       ├── rtg
+│       │   └── compute_reward_to_go()
+│       └── surrogate
+│           └── reinforce_surrogate_loss()
 ├── lr
 │   └── warmup
 │       └── get_linear_warmup_scheduler()
@@ -53,6 +72,13 @@ ytch
 ├── nn
 │   ├── elementwise_affine
 │   │   └── ElementwiseAffine
+│   ├── film
+│   │   └── FiLM
+│   ├── grad_multiply
+│   │   ├── GradMultiply
+│   │   └── grad_multiply()
+│   ├── layer_scale
+│   │   └── LayerScale
 │   ├── rff
 │   │   └── RandomFourierFeaturesND
 │   └── skip
