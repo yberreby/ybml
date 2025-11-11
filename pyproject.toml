@@ -28,10 +28,12 @@ packages = ["ymc", "ytch", "yjax", "ymlx"]
 dev = [
     "basedpyright>=1.31.7",
     "ipython>=9.6.0",
+    "pypatree",
     "pytest>=8.4.2",
     "pytest-cov>=7.0.0",
     "ruff>=0.14.1",
     "rust-just>=1.43.0",
+    "setuptools>=80.9.0",
     "tyro>=0.9.35",
 ]
 
@@ -50,6 +52,7 @@ python_functions = "test_*"
 [tool.uv.sources]
 zclip = { git = "https://github.com/bluorion-com/ZClip.git" }
 hydra-core = { git = "https://github.com/facebookresearch/hydra.git" }
+pypatree = { git = "https://github.com/yberreby/pypatree.git" }
 
 [tool.basedpyright]
 ignore = ['demo/']

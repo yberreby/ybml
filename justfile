@@ -31,7 +31,7 @@ typecheck:
 
 # Inspect module tree
 inspect:
-    uv run python inspect_modules.py
+    uv run python pypatree
 
 # Generate README.md from README.md.in with current module tree
 generate-readme:

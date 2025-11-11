@@ -2416,6 +2416,15 @@ wheels = [
 ]
 
 [[package]]
+name = "pypatree"
+version = "0.1.0"
+source = { git = "https://github.com/yberreby/pypatree.git#ce421b2a83a154b0993c2bf18573bcf32e0d630a" }
+dependencies = [
+    { name = "setuptools" },
+    { name = "tyro" },
+]
+
+[[package]]
 name = "pyperclip"
 version = "1.11.0"
 source = { registry = "https://pypi.org/simple" }
@@ -3343,10 +3352,12 @@ dependencies = [
 dev = [
     { name = "basedpyright" },
     { name = "ipython" },
+    { name = "pypatree" },
     { name = "pytest" },
     { name = "pytest-cov" },
     { name = "ruff" },
     { name = "rust-just" },
+    { name = "setuptools" },
     { name = "tyro" },
 ]
 
@@ -3368,10 +3379,12 @@ requires-dist = [
 dev = [
     { name = "basedpyright", specifier = ">=1.31.7" },
     { name = "ipython", specifier = ">=9.6.0" },
+    { name = "pypatree", git = "https://github.com/yberreby/pypatree.git" },
     { name = "pytest", specifier = ">=8.4.2" },
     { name = "pytest-cov", specifier = ">=7.0.0" },
     { name = "ruff", specifier = ">=0.14.1" },
     { name = "rust-just", specifier = ">=1.43.0" },
+    { name = "setuptools", specifier = ">=80.9.0" },
     { name = "tyro", specifier = ">=0.9.35" },
 ]
 

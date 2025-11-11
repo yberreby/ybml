@@ -19,6 +19,7 @@ See `./justfile` for up-to-date commands.
 ## Module tree
 
 ```
+yjax
 ymc
 ├── constants
 ├── git
@@ -28,6 +29,7 @@ ymc
 │   └── get_warmup_steps_for_adam_beta2()
 └── random
     └── sample_by_tail_ratio()
+ymlx
 ytch
 ├── attention
 │   ├── cross_attention
@@ -51,6 +53,9 @@ ytch
 │       ├── get_loss_reinforce()
 │       ├── get_loss_rloo_scalar()
 │       └── get_loss_rloo_stepwise()
+│       ├── get_loss_reinforce()
+│       ├── get_loss_rloo_scalar()
+│       ├── get_loss_rloo_stepwise()
 │       ├── baseline
 │       │   └── compute_leave_one_out_baseline()
 │       ├── rtg

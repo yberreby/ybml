@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-"""Generate README.md from README.md.in with current module tree."""
-
 import subprocess
 from pathlib import Path
 
@@ -9,9 +6,9 @@ OUTPUT_PATH = Path("README.md")
 
 
 def main():
-    # Get module tree from inspect_modules.py
+    # Get module tree
     result = subprocess.run(
-        ["python", "inspect_modules.py"],
+        ["pypatree"],
         capture_output=True,
         text=True,
         check=True,
