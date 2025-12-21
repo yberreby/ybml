@@ -147,7 +147,7 @@ class CoordMLP(nn.Module):
             nn.Linear(io_dim, 3, device=device),
             nn.Tanh(),
             # Bounded but rescalable output range
-            ElementwiseAffine(3, init_gamma=5.0, device=device),
+            ElementwiseAffine(3, scale=5.0, device=device),
         )
 
         # Hidden blocks: the bulk
