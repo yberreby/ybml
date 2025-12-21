@@ -8,31 +8,62 @@ version = "0.1.0"
 description = "A collection of ML utilities."
 readme = "README.md"
 requires-python = ">=3.11"
-dependencies = [
-    "hydra-core",
-    "jaxtyping>=0.3.3",
-    "matplotlib>=3.10.7",
-    "mlflow>=3.5.0",
-    "numpy>=2.3.4",
-    "optuna>=4.5.0",
-    "scikit-learn>=1.7.2",
-    "torch>=2.9.0",
-    "tqdm>=4.67.1",
-    "zclip",
+license = "MIT"
+authors = [{ name = "Yohaï-Eliel Berreby", email = "yohaiberreby@gmail.com" }]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Typing :: Typed",
 ]
+
+dependencies = [
+    "jaxtyping>=0.2.0",
+    "numpy>=2.0.0",
+    "torch>=2.0.0",
+]
+
+[project.urls]
+Repository = "https://github.com/yberreby/ybml"
 
 [tool.hatch.build.targets.wheel]
 packages = ["ymc", "ytch", "yjax", "ymlx"]
+exclude = ["**/test.py"]
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+    "/.github",
+    "/.claude",
+    "/demo",
+    "/throwaway",
+    "/mlruns",
+    "/outputs",
+    "/scratch*.py",
+    "*.png",
+    "*.jpg",
+    "*.mp4",
+]
 
 [dependency-groups]
 dev = [
     "basedpyright>=1.31.7",
+    "hydra-core",
     "ipython>=9.6.0",
+    "mlflow>=3.5.0",
+    "optuna>=4.5.0",
     "pypatree",
+    "pyqt6>=6.10.0",
     "pytest>=8.4.2",
     "pytest-cov>=7.0.0",
     "ruff>=0.14.1",
     "rust-just>=1.43.0",
+    "scikit-learn>=1.7.2",
     "setuptools>=80.9.0",
     "tyro>=0.9.35",
 ]
@@ -50,12 +81,10 @@ python_files = "test*.py"
 python_functions = "test_*"
 
 [tool.uv.sources]
-zclip = { git = "https://github.com/bluorion-com/ZClip.git" }
 hydra-core = { git = "https://github.com/facebookresearch/hydra.git" }
-pypatree = { git = "https://github.com/yberreby/pypatree.git" }
 
 [tool.basedpyright]
-ignore = ['demo/']
+ignore = ['demo/', 'ytch/_train_disabled/']
 reportMissingTypeStubs = "none"
 reportExplicitAny = "none"
 reportAny = "none"
