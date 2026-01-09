@@ -7,17 +7,20 @@ class ElementwiseAffine(nn.Module):
     """
     Learnable per-dimension affine: y = scale * x + bias
 
+    Reparameterized so learnable components start at zero:
+      scale = init_scale + delta_scale (delta_scale init to 0)
+      bias = init_bias + delta_bias (delta_bias init to 0)
+
+    This ensures AdamW weight decay biases towards identity transform.
+
     Args:
         dim: Feature dimension
         scale: None (init to 1) | float/Tensor (init value)
         bias: None/True (init to 0) | float/Tensor (init value) | False (disabled)
-
-    Examples:
-        ElementwiseAffine(512)                    # scale=1, bias=0
-        ElementwiseAffine(512, scale=2.0)         # scale=2, bias=0
-        ElementwiseAffine(512, bias=False)        # scale=1, no bias
-        ElementwiseAffine(512, scale=0.01)        # scale=0.01, bias=0
     """
+
+    init_scale: Tensor
+    init_bias: Tensor | None
 
     def __init__(
         self,
@@ -29,37 +32,45 @@ class ElementwiseAffine(nn.Module):
     ):
         super().__init__()
 
-        def _make_scale(val):
-            if val is None:
-                return nn.Parameter(torch.ones(dim, device=device, dtype=dtype))
-            if isinstance(val, (int, float)):
-                return nn.Parameter(
-                    torch.full((dim,), float(val), device=device, dtype=dtype)
-                )
-            assert isinstance(val, Tensor)
-            return nn.Parameter(val.to(device=device, dtype=dtype))
+        scale_val = 1.0 if scale is None else scale
+        if isinstance(scale_val, (int, float)):
+            init_s = torch.full((dim,), float(scale_val), device=device, dtype=dtype)
+        else:
+            init_s = scale_val.to(device=device, dtype=dtype)
+        self.register_buffer("init_scale", init_s)
+        self.delta_scale = nn.Parameter(torch.zeros(dim, device=device, dtype=dtype))
 
-        def _make_bias(val):
-            if val is None or val is True:
-                return nn.Parameter(torch.zeros(dim, device=device, dtype=dtype))
-            if val is False:
-                return None
-            if isinstance(val, (int, float)):
-                return nn.Parameter(
-                    torch.full((dim,), float(val), device=device, dtype=dtype)
-                )
-            assert isinstance(val, Tensor)
-            return nn.Parameter(val.to(device=device, dtype=dtype))
+        if bias is False:
+            self.register_buffer("init_bias", None)
+            self.delta_bias = None
+        else:
+            bias_val = 0.0 if bias is None or bias is True else bias
+            if isinstance(bias_val, (int, float)):
+                init_b = torch.full((dim,), float(bias_val), device=device, dtype=dtype)
+            else:
+                init_b = bias_val.to(device=device, dtype=dtype)
+            self.register_buffer("init_bias", init_b)
+            self.delta_bias = nn.Parameter(torch.zeros(dim, device=device, dtype=dtype))
 
-        self.scale = _make_scale(scale)
-        self.bias = _make_bias(bias)
+    @property
+    def scale(self) -> Tensor:
+        return self.init_scale + self.delta_scale
+
+    @property
+    def bias(self) -> Tensor | None:
+        if self.init_bias is None:
+            return None
+        assert self.delta_bias is not None
+        return self.init_bias + self.delta_bias
 
     def forward(self, x: Tensor) -> Tensor:
-        assert x.size(-1) == self.scale.numel(), (
-            f"Expected last dim {self.scale.numel()}, got {x.size(-1)}"
+        scale = self.scale
+        assert x.size(-1) == scale.numel(), (
+            f"Expected last dim {scale.numel()}, got {x.size(-1)}"
         )
         shape = (1,) * (x.ndim - 1) + (-1,)
-        out = x * self.scale.view(shape).to(x.dtype)
-        if self.bias is not None:
-            out = out + self.bias.view(shape).to(x.dtype)
+        out = x * scale.view(shape).to(x.dtype)
+        bias = self.bias
+        if bias is not None:
+            out = out + bias.view(shape).to(x.dtype)
         return out
