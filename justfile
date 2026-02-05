@@ -9,10 +9,6 @@ test:
 coverage:
     uv run -m pytest --cov=ytch --cov=yjax --cov=ymlx --cov-report=term-missing
 
-# Run a demo
-demo name:
-    uv run python -m demo.{{name}}
-
 # Lint with ruff
 lint:
     uv run ruff check --fix .
