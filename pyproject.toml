@@ -32,6 +32,11 @@ dependencies = [
 [project.urls]
 Repository = "https://github.com/yberreby/ybml"
 
+[project.optional-dependencies]
+mlx = [
+    "mlx>=0.31.0",
+]
+
 [tool.hatch.build.targets.wheel]
 packages = ["ymc", "ytch", "yjax", "ymlx"]
 exclude = ["**/test.py"]
@@ -55,6 +60,7 @@ dev = [
     "hydra-core",
     "ipython>=9.6.0",
     "mlflow>=3.5.0",
+    "mlx>=0.31.0 ; sys_platform == 'darwin'",
     "optuna>=4.5.0",
     "pypatree",
     "pyqt6>=6.10.0",

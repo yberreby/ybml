@@ -8,9 +8,13 @@ Core, framework-independent code is in `ymc`.
 ## Testing
 - `uv run just`: linting, type checking, formatting, testing, coverage.
 
-## Demos
+## End-to-end demo(s)
 
-See [ybml-demos](https://github.com/yberreby/ybml-demos).
+- `uv run just demo ytch_two_moons`: utterly toy task; uses MLFlow.
+- `uv run just demo single_img_deep_coord_mlp`: NeRF-style coordinate MLP mapping `(x,y)` to `(r,g,b)` to learn an image with a few twists.
+
+See `./justfile` for up-to-date commands.
+
 
 ## Module tree
 
@@ -26,6 +30,14 @@ ymc
 └── random
     └── sample_by_tail_ratio()
 ymlx
+└── nn
+    ├── retain_write_swiglu
+    │   ├── RetainWriteSwiGLUCell
+    │   └── RetainWriteSwiGLUStep
+    └── swiglu
+        ├── SwiGLU
+        ├── SwiGLUResidualBlock
+        └── default_hidden()
 ytch
 ├── attention
 │   ├── cross_attention
