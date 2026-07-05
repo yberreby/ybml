@@ -21,10 +21,11 @@ wakes on the first optimizer steps.
 
 Empirical basis (single seed, d=128, coordinate-regression harness,
 2026-07-04, repo 2026-07-03-fun-exps @ ef32d27): vs an identically tuned
-SwiGLU baseline, ~+3 dB on static depth (weight-tied, 24 steps deep — above
-a fully untied stack at 28x fewer params) and ~+3 dB on changing-input
-recurrence with a near-seamless mid-rollout target switch, at +25% params /
-+28% FLOPs. Design decisions and refuted alternatives: that repo's
+SwiGLU baseline, ~+3 dB on static depth (weight-tied, 24 steps deep) and
+~+3 dB on changing-input recurrence with a near-seamless mid-rollout target
+switch, at +25% params / +28% FLOPs. Weight-tied, it also matched the best
+fully-untied model measured in that harness (a different gated variant,
+separate run) at 28x fewer params. Design decisions and refuted alternatives: that repo's
 RESEARCH_LOG.md.
 """
 
